@@ -23,9 +23,9 @@ app.post('/gemini/ia', async (req, res) => {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
     try {
-        const result = await model.generateContent({ prompt: jsonRequest.message }); // Asegúrate de que la propiedad es 'prompt'
-        // Dependiendo de la API, es posible que necesites ajustar cómo accedes a la respuesta.
-        const text = await result.text(); // Si 'result' es directamente la respuesta HTTP, usa result.text()
+        const result = await model.generateContent(jsonRequest.message); // Asegúrate de que la propiedad es 'prompt'
+        const response = await result.response;
+        const text = response.text();
         res.json({
             response: text,
         });
