@@ -7,9 +7,6 @@ const PORT = 3000;
 
 // Usa CORS - Esto añadirá los encabezados CORS adecuados a las respuestas
 app.use(cors());
-app.use(cors({
-    origin: 'https://www.cosmopolitan.com'
-  }));
 
 // Middleware para parsear el cuerpo de las solicitudes POST en formato JSON
 app.use(express.json());
