@@ -1,8 +1,12 @@
 import express from 'express';
+import cors from 'cors'; // Importa CORS
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const app = express();
 const PORT = 3000;
+
+// Usa CORS - Esto añadirá los encabezados CORS adecuados a las respuestas
+app.use(cors());
 
 // Middleware para parsear el cuerpo de las solicitudes POST en formato JSON
 app.use(express.json());
@@ -19,15 +23,15 @@ app.post('/gemini/ia', async (req, res) => {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
     try {
-        const result = await model.generateContent(jsonRequest.message);
-        const response = await result.response;
-        const text = response.text();
+        const result = await model.generateContent({ prompt: jsonRequest.message }); // Asegúrate de que la propiedad es 'prompt'
+        // Dependiendo de la API, es posible que necesites ajustar cómo accedes a la respuesta.
+        const text = await result.text(); // Si 'result' es directamente la respuesta HTTP, usa result.text()
         res.json({
             response: text,
         });
     } catch (error) {
         console.error(error); // Es una buena práctica registrar el error para depuración
-        res.json({
+        res.status(500).json({
             response: "Problema en la consulta",
         });
     }
